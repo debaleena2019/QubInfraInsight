@@ -2,11 +2,20 @@ from django.db import models
 
 
 class Customer(models.Model):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     tao = models.CharField(max_length=100)
+    updated_on = models.DateTimeField(auto_now=True)
+    updated_by = models.CharField(max_length=100)
+
+
+class CustomerLegalInfo(models.Model):
+    id = models.CharField(max_length=100, primary_key=True)
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    type = models.CharField(max_length=100)
+    value = models.CharField(max_length=100)
     updated_on = models.DateTimeField(auto_now=True)
     updated_by = models.CharField(max_length=100)
 

@@ -1,9 +1,9 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email, Phone, \
-    ProjectAttributes
+    ProjectAttributes, CustomerLegalInfo
 from .serializers import AddressSerializer, CustomerAdditionalInfoSerializer, EmailSerializer, PhoneSerializer, \
-    ProjectAttributeSerializer, ProjectSerializer, CustomerSerializer, CustomerCommChannelSerializer
+    ProjectAttributeSerializer, ProjectSerializer, CustomerSerializer, CustomerCommChannelSerializer, \
+    CustomerLegalInfoSerializer
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
@@ -19,6 +19,11 @@ class AddressViewSet(viewsets.ModelViewSet):
 class EmailViewSet(viewsets.ModelViewSet):
     queryset = Email.objects.all()
     serializer_class = EmailSerializer
+
+
+class LegalInfoViewSet(viewsets.ModelViewSet):
+    queryset = CustomerLegalInfo.objects.all()
+    serializer_class = CustomerLegalInfoSerializer
 
 
 class CustomerCommChannelViewSet(viewsets.ModelViewSet):

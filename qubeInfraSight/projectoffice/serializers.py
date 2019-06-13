@@ -1,11 +1,18 @@
 from rest_framework import serializers
 from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email, Phone, \
-    ProjectAttributes
+    ProjectAttributes, CustomerLegalInfo
 
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
+        # fields = '__all__'
+        fields = ('name', 'code', 'type', 'updated_by')
+
+
+class CustomerLegalInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerLegalInfo
         fields = '__all__'
 
 
