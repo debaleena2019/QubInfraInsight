@@ -18,17 +18,22 @@ from rest_framework import routers
 from .views import *
 
 router = routers.DefaultRouter()
-router.register(r'customers', CustomerViewSet)
-router.register(r'address', AddressViewSet)
-router.register(r'email', EmailViewSet)
-router.register(r'custcommchannel', CustomerCommChannelViewSet)
-router.register(r'addinfo', CustomerAddInfoViewSet)
-router.register(r'legalinfo', LegalInfoViewSet)
-router.register(r'phone', PhoneViewSet)
-router.register(r'projects', ProjectViewSet)
-router.register(r'projectsattributes', ProjectAttributeViewSet)
+# router.register(r'customers', CustomerViewSet)
+# router.register(r'address', AddressViewSet)
+# router.register(r'email', EmailViewSet)
+# router.register(r'custcommchannel', CustomerCommChannelViewSet)
+# router.register(r'addinfo', CustomerAddInfoViewSet)
+# router.register(r'legalinfo', LegalInfoViewSet)
+# router.register(r'phone', PhoneViewSet)
+# router.register(r'projects', ProjectViewSet)
+# router.register(r'projectsattributes', ProjectAttributeViewSet)
+router.register(r'customer', CustomerAggregateViewSet)
+# router.register(r'^searchcustomer', customer_list())
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('projectoffice/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+
+# http://127.0.0.1:8000/projectoffice/customer
+# http://127.0.0.1:8000/projectoffice/customer/2/
