@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email, Phone, \
     ProjectAttributes, CustomerLegalInfo
 
@@ -45,21 +46,9 @@ class CustomerCommChannelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Address
-        fields = '__all__'
-
-
 class CustomerAdditionalInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerAdditionalAttribute
-        fields = '__all__'
-
-
-class EmailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Email
         fields = '__all__'
 
 
@@ -77,11 +66,10 @@ class ProjectAttributeSerializer(serializers.ModelSerializer):
 
 class CustomerAggregatedSerializer(serializers.ModelSerializer):
     customerLegalInfo_set = CustomerLegalInfoSerializer(source='customer_legal_info', many=True)
-    customerAdditionalAttribute_set = CustomerAdditionalInfoSerializer(source='customer_aditional_info',many=True)
+    customerAdditionalAttribute_set = CustomerAdditionalInfoSerializer(source='customer_aditional_info', many=True)
     customerCommChannel_set = CustomerCommChannelSerializer(source='customer_comm_channel', many=True)
 
     class Meta:
         model = Customer
         fields = '__all__'
         # fields = ('name', 'code', 'type', 'updated_by')
-
