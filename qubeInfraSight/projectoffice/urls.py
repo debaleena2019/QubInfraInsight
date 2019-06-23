@@ -28,7 +28,8 @@ router = routers.DefaultRouter()
 # router.register(r'projects', ProjectViewSet)
 # router.register(r'projectsattributes', ProjectAttributeViewSet)
 router.register(r'customer', CustomerAggregateViewSet)
-# router.register(r'^searchcustomer', customer_list())
+#router.register(r'customer/create', CreateCustomer, base_name='Customer')
+#router.register(r'^searchcustomer', customer_list())
 
 urlpatterns = [
     path('projectoffice/', include(router.urls)),

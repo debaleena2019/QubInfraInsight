@@ -45,7 +45,7 @@ class ProjectAttributes(models.Model):
 
 class CustomerAdditionalAttribute(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
-    customer_id = models.ForeignKey(Customer, related_name='customer_aditional_info', on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(Customer, related_name='customer_additional_info', on_delete=models.CASCADE)
     add_attribute = models.CharField(max_length=20)
     add_value = models.CharField(max_length=20)
     updated_on = models.DateTimeField(auto_now=True)
