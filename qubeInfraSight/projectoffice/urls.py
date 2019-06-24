@@ -1,5 +1,6 @@
 """qubeInfraSight URL Configuration
 
+
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
 Examples:
@@ -16,8 +17,13 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework import routers
 from .views import *
+from django.urls import path,include
+from rest_framework import routers
+from .import views
 
 router = routers.DefaultRouter()
+router.register(r'',views.orgViewSet)
+
 # router.register(r'customers', CustomerViewSet)
 # router.register(r'address', AddressViewSet)
 # router.register(r'email', EmailViewSet)
@@ -27,12 +33,18 @@ router = routers.DefaultRouter()
 # router.register(r'phone', PhoneViewSet)
 # router.register(r'projects', ProjectViewSet)
 # router.register(r'projectsattributes', ProjectAttributeViewSet)
-router.register(r'customer', CustomerAggregateViewSet)
+#router.register(r'customer', CustomerAggregateViewSet)
 # router.register(r'^searchcustomer', customer_list())
 
+# urlpatterns = [
+#     path('projectoffice/', include(router.urls)),
+#     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+# ]
 urlpatterns = [
-    path('projectoffice/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
+    path('Projectoffice/',include(router.urls)),
+    path('createcust/',views.createorg,name='createcustomer'),
+    path('updatecust/',views.updateorg,name='Updatecustomer')
 ]
 
 # http://127.0.0.1:8000/projectoffice/customer
