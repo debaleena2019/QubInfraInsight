@@ -85,6 +85,8 @@ def createcust(request):
     if request.method == "POST":
         # serializer = CustomerSerializer(data=request.data)
         serializer = CustomerSerializer()
+        print(serializer)
+        print(serializer.initial_data)
         serializer.create(request.data)
         return Response({"customer created, Data="})
 

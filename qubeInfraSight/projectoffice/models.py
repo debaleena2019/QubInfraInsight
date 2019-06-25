@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Customer(models.Model):
-    id = models.IntegerField(primary_key=True)
+    customer_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
@@ -12,7 +12,7 @@ class Customer(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_customer'
+        db_table = 'projectoffice_customer'
 
     # class Meta:
     #     managed = False
@@ -21,16 +21,17 @@ class Customer(models.Model):
 
 class CustomerLegalInfo(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
-    customer_id = models.ForeignKey(Customer, related_name='customer_legal_info', on_delete=models.CASCADE)
+    # id = models.AutoField(primary_key=True)
+    customer = models.ForeignKey(Customer, related_name='customer_legal_info', on_delete=models.CASCADE)
     type = models.CharField(max_length=100)
     value = models.CharField(max_length=100)
     updated_on = models.DateTimeField(auto_now=True)
     updated_by = models.CharField(max_length=100)
 
     class Meta:
-        unique_together = ('customer_id', 'id')
+        unique_together = ('customer', 'id')
         managed = False
-        db_table = 'tbl_legal_info'
+        db_table = 'projectoffice_customerlegalinfo'
 
 
 # class Project(models.Model):
@@ -54,7 +55,7 @@ class CustomerLegalInfo(models.Model):
 #
 class CustomerAdditionalAttribute(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
-    customer_id = models.ForeignKey(Customer, related_name='customer_additional_info', on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, related_name='customer_additional_info', on_delete=models.CASCADE)
     add_attribute = models.CharField(max_length=20)
     add_value = models.CharField(max_length=20)
     updated_on = models.DateTimeField(auto_now=True)
@@ -62,8 +63,8 @@ class CustomerAdditionalAttribute(models.Model):
 
     class Meta:
         managed = False
-        unique_together = ('customer_id', 'id')
-        db_table = 'tbl_additional_attribute'
+        unique_together = ('customer', 'id')
+        db_table = 'projectoffice_customeradditionalattribute'
 
 
 # class CustomerCommChannel(models.Model):

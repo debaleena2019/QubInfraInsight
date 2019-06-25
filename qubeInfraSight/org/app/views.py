@@ -57,7 +57,7 @@ def createorg(request):
 @api_view(['GET','POST'])
 def updateorg(request):
     if request.method=="POST":
-        additional_attr=request.data['additional_attributes'][0]
+                additional_attr=request.data['additional_attributes'][0]
         serializer=AdditionalAttributeSerializer(data=additional_attr)
         print(additional_attr)
         #_, mesage = serializer.create()
