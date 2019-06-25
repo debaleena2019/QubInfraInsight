@@ -3,7 +3,6 @@ from rest_framework import viewsets, request
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.utils import json
-from django.db import transaction
 
 from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email, Phone, \
     ProjectAttributes, CustomerLegalInfo
@@ -55,35 +54,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class ProjectAttributeViewSet(viewsets.ModelViewSet):
     queryset = ProjectAttributes.objects.all()
     serializer_class = ProjectAttributeSerializer
-
-
-@api_view(['GET', 'POST', 'PUT'])
-def createorg(request):
-    if request.method == "POST":
-        serializer = CustomerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        # print(request.data)
-        return Response({"customer created, Data=": request.data.get('org_id')})
-
-
-@transaction.atomic
-@api_view(['GET', 'POST'])
-def updateorg(request):
-    if request.method == "POST":
-        additional_attr = request.data['additional_attributes'][0]
-        serializer = CustomerAdditionalInfoSerializer(data=additional_attr)
-        print(additional_attr)
-        # _, mesage = serializer.create()
-
-        legal_info = request.data['org_legal_info'][0]
-        legal_serializer = CustomerLegalInfoSerializer(data=legal_info)
-        print(legal_info)
-        # print(legal_serializer.data['legalinfo_type'])
-        legal = legal_serializer.create()
-        # print(legal)
-
-        return Response({"Additional Attribute created, Data=": request.data['org_legal_info']})
 
 
 class CustomerAggregateViewSet(viewsets.ModelViewSet):
