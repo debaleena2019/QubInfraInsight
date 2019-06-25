@@ -1,16 +1,15 @@
 from rest_framework import serializers
 
-from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email, Phone, \
-    ProjectAttributes, CustomerLegalInfo
+# from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email, Phone, \
+#     ProjectAttributes, CustomerLegalInfo
+from .models import Customer,CustomerAdditionalAttribute,\
+  CustomerLegalInfo
 
 
-
-class CustomerSerializer(serializers.HyperlinkedModelSerializer):
+class CustomerAdditionalInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Customer
+        model = CustomerAdditionalAttribute
         fields = '__all__'
-        # fields = ('name', 'code', 'type', 'updated_by')
-
 
 class CustomerLegalInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,42 +17,64 @@ class CustomerLegalInfoSerializer(serializers.ModelSerializer):
     #    depth = 1
         fields = '__all__'
 
-    def create(self):
-        legal_info = CustomerLegalInfo.objects.create()
-        return legal_info
+    # def create(self):
+    #     legal_info = CustomerLegalInfo.objects.create()
+    #     return legal_info
 
-
-class PhoneSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Phone
-        fields = '__all__'
-
-
-class EmailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Email
-        fields = '__all__'
-
-
-class AddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Address
-        fields = '__all__'
-
-
-class CustomerCommChannelSerializer(serializers.ModelSerializer):
-    # phone_set = PhoneSerializer(source='phone', many=True)
-    # email_set = EmailSerializer(source='email', many=True)
-    # address_set = AddressSerializer(source='address', many=True)
-    phone_set = PhoneSerializer(source='comm_phone',many=True)
-    email_set = EmailSerializer(source='comm_email',many=True)
-    address_set = AddressSerializer(source='comm_address',many=True)
-
+class CustomerSerializer(serializers.HyperlinkedModelSerializer):
+    additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info', many=True,
+                                                             read_only=True)
+    customer_legal_info = CustomerLegalInfoSerializer(many=True, read_only=True)
 
     class Meta:
-        model = CustomerCommChannel
+        model = Customer
         fields = '__all__'
+        # fields = ('name', 'code', 'type', 'updated_by')
+    def create(self, validate_data):
+        additional_attrs = validate_data.pop('additional_attributes')
+        customer_legal_info=validate_data.pop('org_legal_info')
+        # comm_channels=validate_data.pop('comm_channel')
+        custable = Customer.objects.create(**validate_data)
+        for addattrs in additional_attrs:
+            CustomerAdditionalAttribute.objects.create(custable=custable, **addattrs)
+            # for legals in legal_infos:
+            #     TblLegalInfo.objects.create(legals)
+        return custable
 
+
+
+
+# class PhoneSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Phone
+#         fields = '__all__'
+#
+#
+# class EmailSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Email
+#         fields = '__all__'
+#
+#
+# class AddressSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Address
+#         fields = '__all__'
+#
+#
+# class CustomerCommChannelSerializer(serializers.ModelSerializer):
+#     # phone_set = PhoneSerializer(source='phone', many=True)
+#     # email_set = EmailSerializer(source='email', many=True)
+#     # address_set = AddressSerializer(source='address', many=True)
+#     phone_set = PhoneSerializer(source='comm_phone',many=True)
+#     email_set = EmailSerializer(source='comm_email',many=True)
+#     address_set = AddressSerializer(source='comm_address',many=True)
+#
+#
+#     class Meta:
+#         model = CustomerCommChannel
+#         fields = '__all__'
+#
     # def create(self, validated_data):
     #     phone_data = validated_data.pop('phone_set')
     #     email_data = validated_data.pop('email_set')
@@ -72,25 +93,25 @@ class CustomerCommChannelSerializer(serializers.ModelSerializer):
     #     return comm_channel
 
 
-class CustomerAdditionalInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomerAdditionalAttribute
-        fields = '__all__'
-    def create(self):
-        add_attr_table=CustomerAdditionalAttribute.objects.create()
-        return add_attr_table, "additional serializer"
+# class CustomerAdditionalInfoSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomerAdditionalAttribute
+#         fields = '__all__'
+    # def create(self):
+    #     add_attr_table=CustomerAdditionalAttribute.objects.create()
+    #     return add_attr_table, "additional serializer"
 
 
-class ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = '__all__'
-
-
-class ProjectAttributeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProjectAttributes
-        fields = '__all__'
+# class ProjectSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Project
+#         fields = '__all__'
+#
+#
+# class ProjectAttributeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ProjectAttributes
+#         fields = '__all__'
 
 
 # class CustomerAggregatedSerializer(serializers.ModelSerializer):
@@ -105,41 +126,41 @@ class ProjectAttributeSerializer(serializers.ModelSerializer):
 
 
 # serializer for create customer & Search customer
-class CustomerAggregatedSerializer(serializers.ModelSerializer):
-    additional_attributes = CustomerAdditionalAttribute(source='additional_att', many=True, read_only=True)
-    comm_channel = CustomerCommChannel(many=True, read_only=True)
-    cust_legal_info = CustomerLegalInfo(many=True, read_only=True)
+# class CustomerAggregatedSerializer(serializers.ModelSerializer):
+#     additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info', many=True, read_only=True)
+#     customer_comm_channel = CustomerCommChannelSerializer(many=True, read_only=True)
+#     customer_legal_info = CustomerLegalInfoSerializer(many=True, read_only=True)
+#
+#     class Meta:
+#         model = Customer
+#         fields = '__all__'
+#
+#     def save(self, validate_data):
+#         custtable = Customer.objects.update_or_create(**validate_data)
+#         return custtable
 
-    class Meta:
-        model = Customer
-        fields = '__all__'
 
-    def save(self, validate_data):
-        custtable = Customer.objects.update_or_create(**validate_data)
-        return custtable
-
-
-class UpdateCustSerializer(serializers.ModelSerializer):
-    additional_attributes = CustomerAdditionalInfoSerializer(source='additional_att', many=True)
-    comm_channel = CustomerCommChannelSerializer(many=True, read_only=True)
-    org_legal_info = CustomerLegalInfo(many=True, read_only=True)
-
-    class Meta:
-        model = Customer
-        fields = '__all__'
-
-    def create(self, validate_data):
-        additional_attrs = validate_data.pop('additional_attributes')
-        # legal_infos=validate_data.pop('org_legal_info')
-        # comm_channels=validate_data.pop('comm_channel')
-        custable = Customer.objects.create(**validate_data)
-        for addattrs in additional_attrs:
-            CustomerAdditionalAttribute.objects.create(custable=custable, **addattrs)
-            # for legals in legal_infos:
-            #     TblLegalInfo.objects.create(legals)
-        return custable
-
-    def update(self, instance, validate_data):
-        custable = Customer.objects.update(**validate_data)
-        custable.save()
-        return custable
+# class UpdateCustSerializer(serializers.ModelSerializer):
+#     additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info', many=True)
+#     customer_comm_channel = CustomerCommChannelSerializer(many=True, read_only=True)
+#     customer_legal_info = CustomerLegalInfoSerializer(many=True, read_only=True)
+#
+#     class Meta:
+#         model = Customer
+#         fields = '__all__'
+#
+#     def create(self, validate_data):
+#         additional_attrs = validate_data.pop('additional_attributes')
+#         # legal_infos=validate_data.pop('org_legal_info')
+#         # comm_channels=validate_data.pop('comm_channel')
+#         custable = Customer.objects.create(**validate_data)
+#         for addattrs in additional_attrs:
+#             CustomerAdditionalAttribute.objects.create(custable=custable, **addattrs)
+#             # for legals in legal_infos:
+#             #     TblLegalInfo.objects.create(legals)
+#         return custable
+#
+#     def update(self, instance, validate_data):
+#         custable = Customer.objects.update(**validate_data)
+#         custable.save()
+#         return custable

@@ -14,15 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
-from rest_framework import routers
-from .views import *
+#from django.urls import path, include
+#from rest_framework import routers
+#from .views import *
 from django.urls import path,include
 from rest_framework import routers
 from .import views
 
 router = routers.DefaultRouter()
-router.register(r'',views.orgViewSet)
+router.register(r'',views.CustomerViewSet)
 
 # router.register(r'customers', CustomerViewSet)
 # router.register(r'address', AddressViewSet)
@@ -42,9 +42,9 @@ router.register(r'',views.orgViewSet)
 # ]
 urlpatterns = [
 
-    path('Projectoffice/',include(router.urls)),
-    path('createcust/',views.createorg,name='createcustomer'),
-    path('updatecust/',views.updateorg,name='Updatecustomer')
+    path('projectoffice/',include(router.urls)),
+    path('createcust/',views.createcust,name='createcustomer'),
+   # path('updatecust/',views.updatecust,name='Updatecustomer')
 ]
 
 # http://127.0.0.1:8000/projectoffice/customer
