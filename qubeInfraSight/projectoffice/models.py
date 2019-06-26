@@ -15,7 +15,7 @@ class Customer(models.Model):
         db_table = 'projectoffice_customer'
 
     def __str__(self):
-        print(str(self.customer_id)+"Vikash")
+
         return str(self.customer_id)
 
 

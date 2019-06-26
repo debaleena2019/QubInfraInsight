@@ -33,18 +33,47 @@ class CustomerSerializer(serializers.ModelSerializer):
         # fields = ('name', 'code', 'type', 'updated_by')
 
     def create(self, validate_data):
-        additional_attrs = validate_data.pop('customer_additional_info')
+        additional_attrs = validate_data.pop('additional_attributes')
         # print(additional_attrs)
-        legal_infos = validate_data.pop('customer_legal_info')
+        legal_infos = validate_data.pop('legal_info')
         # print(legal_infos)
         # comm_channels=validate_data.pop('comm_channel')
         custable = Customer.objects.create(**validate_data)
         for addattrs in additional_attrs:
-            CustomerAdditionalAttribute.objects.create(customer_id=custable, **addattrs)
+            CustomerAdditionalAttribute.objects.create(customer=custable, **addattrs)
         #CustomerAdditionalAttribute.objects.create(customer_id=custable, **additional_attrs)
         for legals in legal_infos:
-            CustomerLegalInfo.objects.create(customer_id=custable, **legals)
+            CustomerLegalInfo.objects.create(customer=custable, **legals)
         return custable
+    def update(self, instance, validated_data):
+        additional_attrs = validated_data.get('additional_attributes')
+        legal_infos = validated_data.get('legal_info')
+        instance.name = validated_data.get("cust_name",instance.name)
+        instance.code = validated_data.get("cust_level",instance.code)
+        instance.save()
+        for attrs in additional_attrs:
+            attr_id = attrs.get('addinfo_id', None)
+            if attr_id:
+                attr_item = CustomerAdditionalAttribute.objects.get(id=attr_id, customer=instance)
+                attr_item.addinfo_value = attrs.get('add_value', attr_item.addinfo_value)
+                print(attr_item.addinfo_value)
+                attr_item.save()
+            else:
+                CustomerAdditionalAttribute.objects.create(customer=instance, **attrs)
+        for legals in legal_infos:
+            legal_id = legals.get('id', None)
+            if legal_id:
+                legal_item = CustomerLegalInfo.objects.get(legalinfo_id=attr_id, cstomer=instance)
+                legal_item.legalinfo_type = legals.get('type', legal_item.legalinfo_type)
+                print(legal_item.legalinfo_type)
+                legal_item.save()
+            else:
+                CustomerLegalInfo.objects.create(customer=instance, **legals)
+        return instance
+
+    def delete():
+        attributes = validated_data.get('additional_attributes')
+        legalinfos = validated_data.get('legal_info')
 
 # class PhoneSerializer(serializers.ModelSerializer):
 #     class Meta:
