@@ -14,9 +14,9 @@ class Customer(models.Model):
         managed = False
         db_table = 'projectoffice_customer'
 
-    # class Meta:
-    #     managed = False
-    #     db_table = 'XXXXXXX'
+    def __str__(self):
+        print(str(self.customer_id)+"Vikash")
+        return str(self.customer_id)
 
 
 class CustomerLegalInfo(models.Model):

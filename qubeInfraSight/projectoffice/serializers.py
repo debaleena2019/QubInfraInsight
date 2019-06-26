@@ -33,17 +33,17 @@ class CustomerSerializer(serializers.ModelSerializer):
         # fields = ('name', 'code', 'type', 'updated_by')
 
     def create(self, validate_data):
-        additional_attrs = validate_data.pop('additional_attributes')
-        print(additional_attrs)
-        legal_infos = validate_data.pop('legal_info')
-        print(legal_infos)
+        additional_attrs = validate_data.pop('customer_additional_info')
+        # print(additional_attrs)
+        legal_infos = validate_data.pop('customer_legal_info')
+        # print(legal_infos)
         # comm_channels=validate_data.pop('comm_channel')
         custable = Customer.objects.create(**validate_data)
         for addattrs in additional_attrs:
-            CustomerAdditionalAttribute.objects.create(customer=custable, **addattrs)
+            CustomerAdditionalAttribute.objects.create(customer_id=custable, **addattrs)
         #CustomerAdditionalAttribute.objects.create(customer_id=custable, **additional_attrs)
         for legals in legal_infos:
-            CustomerLegalInfo.objects.create(customer=custable, **legals)
+            CustomerLegalInfo.objects.create(customer_id=custable, **legals)
         return custable
 
 # class PhoneSerializer(serializers.ModelSerializer):
