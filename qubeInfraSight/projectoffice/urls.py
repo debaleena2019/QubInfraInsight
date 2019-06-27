@@ -44,7 +44,7 @@ urlpatterns = [
 
     path('projectoffice/',include(router.urls)),
     path('createcust/',views.createcust,name='createcustomer'),
-   # path('updatecust/',views.updatecust,name='Updatecustomer')
+    #path('updatecust/',views.updatecust,name='Updatecustomer')
 ]
 
 # http://127.0.0.1:8000/projectoffice/customer

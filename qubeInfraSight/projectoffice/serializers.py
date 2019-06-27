@@ -63,7 +63,7 @@ class CustomerSerializer(serializers.ModelSerializer):
         for legals in legal_infos:
             legal_id = legals.get('id', None)
             if legal_id:
-                legal_item = CustomerLegalInfo.objects.get(legalinfo_id=attr_id, cstomer=instance)
+                legal_item = CustomerLegalInfo.objects.get(legalinfo_id=attr_id, customer=instance)
                 legal_item.legalinfo_type = legals.get('type', legal_item.legalinfo_type)
                 print(legal_item.legalinfo_type)
                 legal_item.save()
@@ -71,9 +71,9 @@ class CustomerSerializer(serializers.ModelSerializer):
                 CustomerLegalInfo.objects.create(customer=instance, **legals)
         return instance
 
-    def delete():
-        attributes = validated_data.get('additional_attributes')
-        legalinfos = validated_data.get('legal_info')
+   # def delete():
+   #     attributes = validated_data.get('additional_attributes')
+   #     legalinfos = validated_data.get('legal_info')
 
 # class PhoneSerializer(serializers.ModelSerializer):
 #     class Meta:
