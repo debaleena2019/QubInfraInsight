@@ -47,20 +47,19 @@ class CustomerSerializer(serializers.ModelSerializer):
             print("attribute id for add")
             if attr_id:
                 attr_item = CustomerAdditionalAttribute.objects.get(id=attr_id, customer=instance)
-                print(attr_item)
-                attr_item.addinfo_value = attrs.get('add_value', attr_item.addinfo_value)
-                print(attr_item.addinfo_value)
+                attr_item.add_attribute = attrs.get('add_attribute', attr_item.add_attribute)
+                attr_item.add_value = attrs.get('add_value', attr_item.add_value)
+                attr_item.updated_by = attrs.get('updated_by', attr_item.updated_by)
                 attr_item.save()
             else:
                 CustomerAdditionalAttribute.objects.create(customer=instance, **attrs)
         for legals in legal_infos:
             legal_id = legals.get('id', None)
             if legal_id:
-                print(legal_id)
-                print(instance)
                 legal_item = CustomerLegalInfo.objects.get(id=legal_id, customer=instance)
-                legal_item.legalinfo_type = legals.get('type', legal_item.legalinfo_type)
-                print(legal_item.legalinfo_type)
+                legal_item.type = legals.get('type', legal_item.type)
+                legal_item.value = legals.get('value', legal_item.value)
+                legal_item.updated_by = legals.get('updated_by', legal_item.updated_by)
                 legal_item.save()
             else:
                 CustomerLegalInfo.objects.create(customer=instance, **legals)
