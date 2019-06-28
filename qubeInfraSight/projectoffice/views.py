@@ -80,9 +80,11 @@ class CustomerAddInfoViewSet(viewsets.ModelViewSet):
 #         #     return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response('')
 # @api_view(['GET', 'POST', 'PUT'])
+
 @api_view(['POST','PUT','GET'])
 def createcust(request):
     if request.method == "POST":
+        print("inside post")
         # serializer = CustomerSerializer(data=request.data)
         serializer = CustomerSerializer()
         # print(serializer)
@@ -91,13 +93,17 @@ def createcust(request):
         serializer.create(request.data)
         return Response({"customer created, Data="})
     if request.method == "PUT":
+        print("inside update")
         customer_id = request.data['customer_id']
         customer = Customer.objects.get(pk=customer_id)
+        print(customer)
+        print(customer_id)
         serializer = CustomerSerializer()
         serializer.update(customer, request.data)
         print("inside update")
         return Response({"update cust, Data="})
-
+    if request.method == 'GET':
+        return Response({"GET"})
         # if serializer.is_valid():
         #     serializer.save()
         # # print(request.data)

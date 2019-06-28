@@ -46,15 +46,18 @@ class CustomerSerializer(serializers.ModelSerializer):
             CustomerLegalInfo.objects.create(customer=custable, **legals)
         return custable
     def update(self, instance, validated_data):
+        print("Update the serializer")
         additional_attrs = validated_data.get('additional_attributes')
         legal_infos = validated_data.get('legal_info')
         instance.name = validated_data.get("cust_name",instance.name)
         instance.code = validated_data.get("cust_level",instance.code)
         instance.save()
         for attrs in additional_attrs:
-            attr_id = attrs.get('addinfo_id', None)
+            attr_id = attrs.get('id', None)
+            print("attribute id for add")
             if attr_id:
                 attr_item = CustomerAdditionalAttribute.objects.get(id=attr_id, customer=instance)
+                print(attr_item)
                 attr_item.addinfo_value = attrs.get('add_value', attr_item.addinfo_value)
                 print(attr_item.addinfo_value)
                 attr_item.save()
@@ -63,7 +66,9 @@ class CustomerSerializer(serializers.ModelSerializer):
         for legals in legal_infos:
             legal_id = legals.get('id', None)
             if legal_id:
-                legal_item = CustomerLegalInfo.objects.get(legalinfo_id=attr_id, customer=instance)
+                print(legal_id)
+                print(instance)
+                legal_item = CustomerLegalInfo.objects.get(id=legal_id, customer=instance)
                 legal_item.legalinfo_type = legals.get('type', legal_item.legalinfo_type)
                 print(legal_item.legalinfo_type)
                 legal_item.save()
