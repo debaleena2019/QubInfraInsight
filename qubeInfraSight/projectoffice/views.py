@@ -1,14 +1,13 @@
-from django.forms import forms
-from rest_framework.views import APIView
-from rest_framework import viewsets, request
-from rest_framework.decorators import action, api_view
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.utils import json
-from django.db import transaction
 
-#from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email,Phone,ProjectAttributes, CustomerLegalInfo
-from .models import Customer,CustomerAdditionalAttribute,CustomerLegalInfo
-from .serializers import CustomerAdditionalInfoSerializer,CustomerSerializer,CustomerLegalInfoSerializer
+# from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute,
+# Email,Phone,ProjectAttributes, CustomerLegalInfo
+from .models import Customer, CustomerAdditionalAttribute, CustomerLegalInfo
+from .serializers import CustomerAdditionalInfoSerializer, CustomerSerializer, \
+    CustomerLegalInfoSerializer
+
 
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
@@ -61,8 +60,8 @@ class CustomerAddInfoViewSet(viewsets.ModelViewSet):
 #     serializer_class = CustomerAggregatedSerializer
 
 
-#@api_view(['GET', 'POST'])
-#def customer_list(request, format=None):
+# @api_view(['GET', 'POST'])
+# def customer_list(request, format=None):
 #    """
 #     List all customer, or search a specific customer.
 #     """
@@ -81,15 +80,10 @@ class CustomerAddInfoViewSet(viewsets.ModelViewSet):
 #         return Response('')
 # @api_view(['GET', 'POST', 'PUT'])
 
-@api_view(['POST','PUT','GET'])
+@api_view(['POST', 'PUT', 'GET'])
 def createcust(request):
     if request.method == "POST":
-        print("inside post")
-        # serializer = CustomerSerializer(data=request.data)
         serializer = CustomerSerializer()
-        # print(serializer)
-        # print(serializer.initial_data)
-        print(request.data)
         serializer.create(request.data)
         return Response({"customer created, Data="})
     if request.method == "PUT":
@@ -103,11 +97,9 @@ def createcust(request):
         print("inside update")
         return Response({"update cust, Data="})
     if request.method == 'GET':
-        return Response({"GET"})
-        # if serializer.is_valid():
-        #     serializer.save()
-        # # print(request.data)
-        # return Response({"customer created, Data=": request.data.get('org_id')})
+        queryset = Customer.objects.all()
+        serializer = CustomerSerializer(queryset,many=True)
+        return Response({"customer": serializer.data})
 
 
 # @transaction.atomic

@@ -1,9 +1,6 @@
 from rest_framework import serializers
-
-# from .models import Customer, CustomerCommChannel, Address, Project, CustomerAdditionalAttribute, Email, Phone, \
-#     ProjectAttributes, CustomerLegalInfo
 from .models import Customer, CustomerAdditionalAttribute, CustomerLegalInfo
-from rest_framework.decorators import api_view
+
 
 class CustomerAdditionalInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +11,6 @@ class CustomerAdditionalInfoSerializer(serializers.ModelSerializer):
 class CustomerLegalInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerLegalInfo
-        #    depth = 1
         fields = '__all__'
 
     # def create(self):
@@ -24,33 +20,27 @@ class CustomerLegalInfoSerializer(serializers.ModelSerializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
     additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info', many=True)
-
     legal_info = CustomerLegalInfoSerializer(source='customer_legal_info', many=True)
 
     class Meta:
         model = Customer
         fields = '__all__'
-        # fields = ('name', 'code', 'type', 'updated_by')
 
     def create(self, validate_data):
         additional_attrs = validate_data.pop('additional_attributes')
-        # print(additional_attrs)
         legal_infos = validate_data.pop('legal_info')
-        # print(legal_infos)
-        # comm_channels=validate_data.pop('comm_channel')
         custable = Customer.objects.create(**validate_data)
         for addattrs in additional_attrs:
             CustomerAdditionalAttribute.objects.create(customer=custable, **addattrs)
-        #CustomerAdditionalAttribute.objects.create(customer_id=custable, **additional_attrs)
         for legals in legal_infos:
             CustomerLegalInfo.objects.create(customer=custable, **legals)
         return custable
+
     def update(self, instance, validated_data):
-        print("Update the serializer")
         additional_attrs = validated_data.get('additional_attributes')
         legal_infos = validated_data.get('legal_info')
-        instance.name = validated_data.get("cust_name",instance.name)
-        instance.code = validated_data.get("cust_level",instance.code)
+        instance.name = validated_data.get("cust_name", instance.name)
+        instance.code = validated_data.get("cust_level", instance.code)
         instance.save()
         for attrs in additional_attrs:
             attr_id = attrs.get('id', None)
@@ -76,9 +66,9 @@ class CustomerSerializer(serializers.ModelSerializer):
                 CustomerLegalInfo.objects.create(customer=instance, **legals)
         return instance
 
-   # def delete():
-   #     attributes = validated_data.get('additional_attributes')
-   #     legalinfos = validated_data.get('legal_info')
+# def delete():
+#     attributes = validated_data.get('additional_attributes')
+#     legalinfos = validated_data.get('legal_info')
 
 # class PhoneSerializer(serializers.ModelSerializer):
 #     class Meta:
@@ -163,7 +153,8 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 # serializer for create customer & Search customer
 # class CustomerAggregatedSerializer(serializers.ModelSerializer):
-#     additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info', many=True, read_only=True)
+#     additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info',
+#     many=True, read_only=True)
 #     customer_comm_channel = CustomerCommChannelSerializer(many=True, read_only=True)
 #     customer_legal_info = CustomerLegalInfoSerializer(many=True, read_only=True)
 #
@@ -177,7 +168,8 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 # class UpdateCustSerializer(serializers.ModelSerializer):
-#     additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info', many=True)
+#     additional_attributes = CustomerAdditionalInfoSerializer(source='customer_additional_info',
+#     many=True)
 #     customer_comm_channel = CustomerCommChannelSerializer(many=True, read_only=True)
 #     customer_legal_info = CustomerLegalInfoSerializer(many=True, read_only=True)
 #
