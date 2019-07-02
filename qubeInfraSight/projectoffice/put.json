@@ -1,0 +1,26 @@
+{
+    "customer_id": 2,
+    "name": "sourav",
+    "code": "1223",
+    "type": "qwert1",
+    "tao": "qwdf",
+    "updated_by": "sourav",
+    "additional_attributes": [
+        {
+            "id": 129,
+            "customer_id": 2,
+            "add_attribute": "hot",
+            "add_value": "cake",
+            "updated_by": "sourav"
+        }
+    ],
+    "legal_info": [
+        {
+            "id": 129,
+            "customer_id": 2,
+            "type": "pan",
+            "value": "PAN1234",
+            "updated_by": "sourav"
+        }
+    ]
+}
