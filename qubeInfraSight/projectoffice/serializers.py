@@ -41,6 +41,8 @@ class CustomerSerializer(serializers.ModelSerializer):
         legal_infos = validated_data.get('legal_info')
         instance.name = validated_data.get("cust_name", instance.name)
         instance.code = validated_data.get("cust_level", instance.code)
+        instance.tao = validated_data.get("tao", instance.tao)
+        instance.type = validated_data.get("type", instance.type)
         instance.save()
         for attrs in additional_attrs:
             attr_id = attrs.get('id', None)

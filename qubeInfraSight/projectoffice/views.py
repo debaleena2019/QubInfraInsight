@@ -26,7 +26,7 @@ class CustomerAddInfoViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerAdditionalInfoSerializer
 
 
-@api_view(['POST', 'PUT', 'GET'])
+@api_view(['POST', 'PUT', 'GET','DELETE'])
 def createcust(request):
     if request.method == "POST":
         serializer = CustomerSerializer()
@@ -39,14 +39,19 @@ def createcust(request):
         print(customer)
         print(customer_id)
         serializer = CustomerSerializer()
-        serializer.update(customer, request.data)
+        serializer.update(customer, request.data) # instance is customer and data input is validated data
         print("inside update")
         return Response({"update cust, Data="})
     if request.method == 'GET':
         queryset = Customer.objects.all()
         serializer = CustomerSerializer(queryset, many=True)
         return Response({"customer": serializer.data})
-
+# @api_view(['DELETE'])
+def deleteData(request):
+    if request.method=='DELETE':
+        cust = Customer.objects.filter(pk=request.data['customer_id'])
+        cust.delete()
+        return Response({"deleted ( for id ) :":cust})
 # @transaction.atomic
 # @api_view(['GET', 'POST'])
 # def updatecust(request):
