@@ -83,11 +83,11 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'fKadclAKey',
-        'HOST': 'remotemysql.com',
+        'NAME': 'projectoffice',
+        'HOST': '35.200.195.27',
         'PORT': '3306',
-        'USER': 'fKadclAKey',
-        'PASSWORD': 'pvhcDZkbbw'
+        'USER': 'deb',
+        'PASSWORD': 'deb321'
     }
 }
 
