@@ -7,8 +7,9 @@ class Customer(models.Model):
     customer_code = models.CharField(max_length=100)
     customer_type = models.CharField(max_length=100)
     customer_tag = models.CharField(max_length=100)
-    customer_updated_on = models.DateTimeField(auto_now=True)
+    customer_updated_on = models.DateTimeField(blank=True, null=True)
     customer_updated_by = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, null=False)
 
     class Meta:
         managed = False
@@ -26,6 +27,7 @@ class CustomerLegalInfo(models.Model):
     legalinfo_value = models.CharField(max_length=100)
     legalinfo_updated_on = models.DateTimeField(auto_now=True)
     legalinfo_updated_by = models.CharField(max_length=100)
+    status = models.CharField(max_length=20,null=False)
 
     class Meta:
         unique_together = ('customer', 'legalinfo_id')
@@ -40,6 +42,7 @@ class Project(models.Model):
     project_type = models.CharField(max_length=32)
     project_updated_on = models.DateTimeField(auto_now=True)
     project_updated_by = models.CharField(max_length=32)
+    status = models.CharField(max_length=20, null=False)
 
     class Meta:
         unique_together = ('customer', 'project_id')
@@ -54,6 +57,7 @@ class ProjectAttributes(models.Model):
     proj_value = models.CharField(max_length=32)
     proj_att_updated_on = models.DateTimeField(auto_now=True)
     proj_att_updated_by = models.CharField(max_length=32)
+    status = models.CharField(max_length=20, null=False)
 
     class Meta:
         unique_together = ('project', 'proj_att_id')
@@ -68,6 +72,7 @@ class CustomerAdditionalAttribute(models.Model):
     addinfo_value = models.CharField(max_length=20)
     addinfo_updated_on = models.DateTimeField(auto_now=True)
     addinfo_updated_by = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, null=False)
 
     class Meta:
         managed = False
@@ -91,6 +96,7 @@ class Phone(models.Model):
     ph_no = models.CharField(max_length=32)
     ph_updated_on = models.DateTimeField(auto_now=True)
     ph_updated_by = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, null=False)
 
     class Meta:
         managed = False
@@ -104,6 +110,7 @@ class Email(models.Model):
     eml_address = models.CharField(max_length=32)
     eml_updated_on = models.DateTimeField(auto_now=True)
     eml_updated_by = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, null=False)
 
     class Meta:
         managed = False
@@ -123,6 +130,7 @@ class Address(models.Model):
     add_pin = models.CharField(max_length=32)
     add_updated_on = models.DateTimeField(auto_now=True)
     add_updated_by = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, null=False)
 
     class Meta:
         managed = False

@@ -67,57 +67,58 @@ class CustomerSerializer(serializers.ModelSerializer):
                 CustomerLegalInfo.objects.create(customer=instance, **legals)
         return instance
 
-# def delete():
-#     attributes = validated_data.get('additional_attributes')
-#     legalinfos = validated_data.get('legal_info')
 
-# class PhoneSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Phone
-#         fields = '__all__'
-#
-#
-# class EmailSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Email
-#         fields = '__all__'
-#
-#
-# class AddressSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Address
-#         fields = '__all__'
-#
-#
-# class CustomerCommChannelSerializer(serializers.ModelSerializer):
-#     # phone_set = PhoneSerializer(source='phone', many=True)
-#     # email_set = EmailSerializer(source='email', many=True)
-#     # address_set = AddressSerializer(source='address', many=True)
-#     phone_set = PhoneSerializer(source='comm_phone',many=True)
-#     email_set = EmailSerializer(source='comm_email',many=True)
-#     address_set = AddressSerializer(source='comm_address',many=True)
-#
-#
-#     class Meta:
-#         model = CustomerCommChannel
-#         fields = '__all__'
-#
-# def create(self, validated_data):
-#     phone_data = validated_data.pop('phone_set')
-#     email_data = validated_data.pop('email_set')
-#     address_data = validated_data.pop('address_set')
-#     comm_channel = CustomerCommChannel.objects.create(**validated_data)
-#
-#     for phone_detail in phone_data:
-#         phone_detail, created = Phone.objects.get_or_create(name=phone_detail['phone'])
-#         comm_channel.phone_set.add(phone_detail)
-#     for email_detail in email_data:
-#         email_detail, created = Email.objects.get_or_create(name=email_detail['email'])
-#         comm_channel.email_set.add(email_detail)
-#     for address_detail in address_data:
-#         address_detail, created = Phone.objects.get_or_create(name=address_detail['line1'])
-#         comm_channel.address_set.add(address_detail)
-#     return comm_channel
+def delete():
+    attributes = validated_data.get('additional_attributes')
+    legalinfos = validated_data.get('legal_info')
+
+class PhoneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Phone
+        fields = '__all__'
+
+
+class EmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Email
+        fields = '__all__'
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = '__all__'
+
+
+class CustomerCommChannelSerializer(serializers.ModelSerializer):
+    # phone_set = PhoneSerializer(source='phone', many=True)
+    # email_set = EmailSerializer(source='email', many=True)
+    # address_set = AddressSerializer(source='address', many=True)
+    phone_set = PhoneSerializer(source='comm_phone',many=True)
+    email_set = EmailSerializer(source='comm_email',many=True)
+    address_set = AddressSerializer(source='comm_address',many=True)
+
+
+    class Meta:
+        model = CustomerCommChannel
+        fields = '__all__'
+
+def create(self, validated_data):
+    phone_data = validated_data.pop('phone_set')
+    email_data = validated_data.pop('email_set')
+    address_data = validated_data.pop('address_set')
+    comm_channel = CustomerCommChannel.objects.create(**validated_data)
+
+    for phone_detail in phone_data:
+        phone_detail, created = Phone.objects.get_or_create(name=phone_detail['phone'])
+        comm_channel.phone_set.add(phone_detail)
+    for email_detail in email_data:
+        email_detail, created = Email.objects.get_or_create(name=email_detail['email'])
+        comm_channel.email_set.add(email_detail)
+    for address_detail in address_data:
+        address_detail, created = Phone.objects.get_or_create(name=address_detail['line1'])
+        comm_channel.address_set.add(address_detail)
+    return comm_channel
 
 
 # class CustomerAdditionalInfoSerializer(serializers.ModelSerializer):
